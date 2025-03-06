@@ -8,14 +8,23 @@ import {
   ScrollView,
   Pressable,
 } from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import { useState } from "react";
 import Colors from "../../constant/Colors";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Location from "../../assets/Icons/Location";
+import Boat from "../../assets/Icons/Boat";
+import Check from "../../assets/Icons/Check";
 
 
 export default function ExploreScreen() {
-  const navigation = useNavigation();  // ✅ Use this instead of `useRouter()`
+  const navigation = useNavigation();
+  const [activeTab, setActiveTab] = useState("Search"); // this screen starts with "Search" active
+
+  const handleTabPress = (tabName) => {
+    setActiveTab(tabName);
+    navigation.navigate(tabName); // navigate to that tab's screen
+  };
 
   const checkedBoats = [
     {
@@ -58,332 +67,346 @@ export default function ExploreScreen() {
 
   return (
     <SafeAreaView  >
-    <View>
-      <ScrollView>
-        {/* header */}
-        <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.navigate("Search")}>
-            <Text style={styles.headerText}>Search</Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text style={styles.headerText}>Explore</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("Savings")}>
-            <Text style={styles.headerText}>Savings</Text>
-          </TouchableOpacity>
-        </View>
+      <View>
+        <ScrollView>
+          {/* header */}
+          <View style={styles.header}>
+            <TouchableOpacity
+              onPress={() => handleTabPress("Search")}
+              style={styles.headerTab}
+            >
+              <Text style={styles.headerText}>Search</Text>
+              {activeTab === "Search" && <View style={styles.activeLine} />}
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => handleTabPress("Explore")}
+              style={styles.headerTab}
+            >
+              <Text style={styles.headerText}>Explore</Text>
+              {activeTab === "Explore" && <View style={styles.activeLine} />}
+            </TouchableOpacity>
 
-        {/* Search bar */}
-        <View style={styles.searchContainer}>
-          <View style={styles.searchBar}>
-            <Ionicons name="location-outline" size={20} color="blue" />
-            <TextInput
-              placeholder="Where to Sell?"r
-              style={styles.searchInput}
-            />
+            <TouchableOpacity
+              onPress={() => handleTabPress("Savings")}
+              style={styles.headerTab}
+            >
+              <Text style={styles.headerText}>Savings</Text>
+              {activeTab === "Savings" && <View style={styles.activeLine} />}
+            </TouchableOpacity>
           </View>
-        </View>
 
-        {/* Memorable  */}
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Memorable Emotions</Text>
-          <TouchableOpacity>
-            <Text style={styles.seeAll}>See All</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Top Scroll Cardss of the design */}
-
-        {/* Scrollable cards */}
-        <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={true}
-          contentContainerStyle={{ paddingHorizontal: 10 }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View style={styles.card}>
-              <Image
-                source={require("../../assets/images/yatch.png")}
-                style={styles.cardImage}
+          {/* Search bar */}
+          <View style={styles.searchContainer}>
+            <View style={styles.searchBar}>
+              <Location fill='#0075ff' />
+              <TextInput
+                placeholder="Where to Sell?"
+                placeholderTextColor={Colors.BLACK}
+                style={styles.searchInput}
               />
-              <Text style={styles.cardTitle}>
-                Gastronomic Adventures in the Caribbeans
-              </Text>
-              <Text style={styles.cardSubtitle}>
-                7 days, 4 lands, fresh seafood and more...
-              </Text>
-              <TouchableOpacity style={styles.exploreButton}>
-                <Text style={styles.exploreText}>Explore</Text>
-                <Ionicons name="people-outline" size={16} color="white" />
-                <Text style={styles.exploreText}>12</Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.card}>
-              <Image
-                source={require("../../assets/images/yatch2.png")}
-                style={styles.cardImage}
-              />
-              <Text style={styles.cardTitle}>
-                Gastronomic Adventures in the Caribbeans
-              </Text>
-              <Text style={styles.cardSubtitle}>
-                7 days, 4 lands, fresh seafood and more...
-              </Text>
-              <TouchableOpacity style={styles.exploreButton}>
-                <Text style={styles.exploreText}>Explore</Text>
-                <Ionicons name="people-outline" size={16} color="white" />
-                <Text style={styles.exploreText}>12</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.card}>
-              <Image
-                source={require("../../assets/images/yatch.png")}
-                style={styles.cardImage}
-              />
-              <Text style={styles.cardTitle}>
-                Gastronomic Adventures in the Caribbeans
-              </Text>
-              <Text style={styles.cardSubtitle}>
-                7 days, 4 lands, fresh seafood and more...
-              </Text>
-              <TouchableOpacity style={styles.exploreButton}>
-                <Text style={styles.exploreText}>Explore</Text>
-                <Ionicons name="people-outline" size={16} color="white" />
-                <Text style={styles.exploreText}>12</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.card}>
-              <Image
-                source={require("../../assets/images/komondoo.png")}
-                style={styles.cardImage}
-              />
-              <Text style={styles.cardTitle}>
-                Gastronomic Adventures in the Caribbeans
-              </Text>
-              <Text style={styles.cardSubtitle}>
-                7 days, 4 lands, fresh seafood and more...
-              </Text>
-              <TouchableOpacity style={styles.exploreButton}>
-                <Text style={styles.exploreText}>Explore</Text>
-                <Ionicons name="people-outline" size={16} color="white" />
-                <Text style={styles.exploreText}>12</Text>
-              </TouchableOpacity>
             </View>
           </View>
-        </ScrollView>
 
-        {/* Small Scroll cardd of explore */}
-        <View>
+          {/* Memorable  */}
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>EXplore Another World</Text>
+            <Text style={styles.sectionTitle}>Memorable Emotions</Text>
             <TouchableOpacity>
               <Text style={styles.seeAll}>See All</Text>
             </TouchableOpacity>
           </View>
+
+          {/* Top Scroll Cardss of the design */}
+
+          {/* Scrollable cards */}
           <ScrollView
             horizontal={true}
             showsHorizontalScrollIndicator={true}
             contentContainerStyle={{ paddingHorizontal: 10 }}
           >
-            {images.map((item, index) => (
-              <View
-                key={index}
-                style={{ marginRight: 10, alignItems: "center" }}
-              >
+            <View style={{ flexDirection: "row" }}>
+              <View style={styles.card}>
                 <Image
-                  style={{
-                    width: 290,
-                    height: 220,
-                    borderRadius: 25,
-                    borderWidth: 1,
-                    borderColor: "#d3d3d3", // Light Gray color
-                    marginBottom: 5, // Reduced margin to keep title closer
-                  }}
-                  source={item.src}
+                  source={require("../../assets/images/yatch.png")}
+                  style={styles.cardImage}
                 />
-                <Text
-                  style={{ fontSize: 16, fontWeight: "bold", color: "#333" }}
-                >
-                  {item.title}
+                <Text style={styles.cardTitle}>
+                  Gastronomic Adventures in the Caribbeans
                 </Text>
+                <Text style={styles.cardSubtitle}>
+                  7 days, 4 lands, fresh seafood and more...
+                </Text>
+                <TouchableOpacity style={styles.exploreButton}>
+                  <Text style={styles.exploreText}>Explore</Text>
+                  <Boat />
+                  <Text style={styles.exploreText}>12</Text>
+                </TouchableOpacity>
               </View>
-            ))}
-          </ScrollView>
 
-          {/* <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Komondo</Text>
-          </View> */}
-          {/* <View style={styles.sectionHeader}>
-            <Text
-              style={{
-                margin: 20,
-                marginLeft: 10,
-              }}
-            >
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed sequi
-              quisquam praesentium, ducimus in recusandae!
-            </Text>
-          </View> */}
-        </View>
-
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            marginBottom: 20,
-            marginTop: 40,
-          }}
-        >
-          {/* Two text fields */}
-          <View
-            style={{
-              width: "80%",
-            }}
-          >
-            <Text style={styles.sectionTitle}>
-              Wating for the World opening?
-            </Text>
-          </View>
-          <View style={styles.sectionHeader}>
-            <Text
-              style={{
-                margin: 20,
-                marginLeft: 10,
-              }}
-            >
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed sequi
-              quisquam praesentium, ducimus in recusandae!
-            </Text>
-          </View>
-
-          <TouchableOpacity
-            style={{
-              backgroundColor: Colors.WHITE,
-              borderColor: "Black",
-              borderWidth: 1,
-              paddingHorizontal: 16,
-              borderRadius: 8,
-              marginTop: 10,
-              height: 60,
-              justifyContent: "center",
-              alignItems: "center",
-              width: "80%",
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 16,
-                color: Colors.BLACK,
-                fontWeight: "bold",
-              }}
-            >
-              Choose Destination
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={{
-              backgroundColor: Colors.WHITE,
-              borderColor: "Black",
-              borderWidth: 1,
-              paddingHorizontal: 16,
-              borderRadius: 8,
-              marginTop: 10,
-              height: 60,
-              justifyContent: "center",
-              alignItems: "center",
-              width: "80%",
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 16,
-                color: Colors.BLACK,
-                fontWeight: "bold",
-              }}
-            >
-              Tell me about the new countries
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* ChALlenges And INSights */}
-        <View>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}> Challenges and Insights</Text>
-            <TouchableOpacity>
-              <Text style={styles.seeAll}>See All</Text>
-            </TouchableOpacity>
-          </View>
-          <Image
-            style={styles.card}
-            source={require("../../assets/images/yatch2.png")}
-          ></Image>
-          <Image
-            style={styles.card}
-            source={require("../../assets/images/yatch.png")}
-          ></Image>
-        </View>
-
-        {/* Black CHeck */}
-
-        <View style={styles.badgeContainer}>
-          <Ionicons name="shield-checkmark" size={20} color="#1E90FF" />
-          <Text style={styles.badgeText}>
-            Checked by our viewers for your satisfaction
-          </Text>
-        </View>
-
-        {/* CHEcked Boats */}
-
-        <View>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Checked Boats</Text>
-            <TouchableOpacity>
-              <Text style={styles.seeAll}>See All</Text>
-            </TouchableOpacity>
-          </View>
-
-          {checkedBoats.map((boat) => (
-            <View key={boat.id} style={styles.boatCard}>
-              <Image source={boat.image} style={styles.boatImage} />
-              <View style={styles.boatDetails}>
-                <Text style={styles.boatTitle}>{boat.name}</Text>
-                <Text style={styles.boatRating}>
-                  ⭐ {boat.rating} · {boat.location}
+              <View style={styles.card}>
+                <Image
+                  source={require("../../assets/images/yatch2.png")}
+                  style={styles.cardImage}
+                />
+                <Text style={styles.cardTitle}>
+                  Gastronomic Adventures in the Caribbeans
                 </Text>
-                <Text style={styles.boatCabins}>{boat.cabins}</Text>
-                <Text style={styles.boatPrice}>{boat.price}</Text>
+                <Text style={styles.cardSubtitle}>
+                  7 days, 4 lands, fresh seafood and more...
+                </Text>
+                <TouchableOpacity style={styles.exploreButton}>
+                  <Text style={styles.exploreText}>Explore</Text>
+                  <Boat />
+                  <Text style={styles.exploreText}>12</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.card}>
+                <Image
+                  source={require("../../assets/images/yatch.png")}
+                  style={styles.cardImage}
+                />
+                <Text style={styles.cardTitle}>
+                  Gastronomic Adventures in the Caribbeans
+                </Text>
+                <Text style={styles.cardSubtitle}>
+                  7 days, 4 lands, fresh seafood and more...
+                </Text>
+                <TouchableOpacity style={styles.exploreButton}>
+                  <Text style={styles.exploreText}>Explore</Text>
+                  <Boat />
+                  <Text style={styles.exploreText}>12</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.card}>
+                <Image
+                  source={require("../../assets/images/komondoo.png")}
+                  style={styles.cardImage}
+                />
+                <Text style={styles.cardTitle}>
+                  Gastronomic Adventures in the Caribbeans
+                </Text>
+                <Text style={styles.cardSubtitle}>
+                  7 days, 4 lands, fresh seafood and more...
+                </Text>
+                <TouchableOpacity style={styles.exploreButton}>
+                  <Text style={styles.exploreText}>Explore</Text>
+                  <Boat />
+                  <Text style={styles.exploreText}>12</Text>
+                </TouchableOpacity>
               </View>
             </View>
-          ))}
-        </View>
+          </ScrollView>
 
-        {/* SUpport Content */}
-        <View style={styles.container}>
-          <Text style={styles.heading}>Support</Text>
-          <Text style={styles.subText}>For Renters</Text>
+          {/* Small Scroll cardd of explore */}
+          <View>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>EXplore Another World</Text>
+              <TouchableOpacity>
+                <Text style={styles.seeAll}>See All</Text>
+              </TouchableOpacity>
+            </View>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={true}
+              contentContainerStyle={{ paddingHorizontal: 10 }}
+            >
+              {images.map((item, index) => (
+                <View
+                  key={index}
+                  style={{ marginRight: 10, alignItems: "center" }}
+                >
+                  <Image
+                    style={{
+                      width: 290,
+                      height: 220,
+                      borderRadius: 25,
+                      borderWidth: 1,
+                      borderColor: "#d3d3d3", // Light Gray color
+                      marginBottom: 5, // Reduced margin to keep title closer
+                    }}
+                    source={item.src}
+                  />
+                  <Text
+                    style={{ fontSize: 16, fontWeight: "bold", color: "#333" }}
+                  >
+                    {item.title}
+                  </Text>
+                </View>
+              ))}
+            </ScrollView>
 
-          <TouchableOpacity style={styles.item}>
-            <Text style={styles.itemText}>Payments</Text>
-            <Text style={styles.subText}>How to pay rent</Text>
-          </TouchableOpacity>
+            {/* <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Komondo</Text>
+          </View> */}
+            {/* <View style={styles.sectionHeader}>
+            <Text
+              style={{
+                margin: 20,
+                marginLeft: 10,
+              }}
+            >
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed sequi
+              quisquam praesentium, ducimus in recusandae!
+            </Text>
+          </View> */}
+          </View>
 
-          <TouchableOpacity style={styles.item}>
-            <Text style={styles.itemText}>Cancellation Options</Text>
-            <Text style={styles.subText}>Learn what’s covered</Text>
-          </TouchableOpacity>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              marginBottom: 20,
+              marginTop: 40,
+            }}
+          >
+            {/* Two text fields */}
+            <View
+              style={{
+                width: "80%",
+              }}
+            >
+              <Text style={styles.sectionTitle}>
+                Wating for the World opening?
+              </Text>
+            </View>
+            <View style={styles.sectionHeader}>
+              <Text
+                style={{
+                  margin: 20,
+                  marginLeft: 10,
+                }}
+              >
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed sequi
+                quisquam praesentium, ducimus in recusandae!
+              </Text>
+            </View>
 
-          <TouchableOpacity style={styles.item}>
-            <Text style={styles.itemText}>Help Centre</Text>
-            <Text style={styles.subText}>Get in touch</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </View>
+            <TouchableOpacity
+              style={{
+                backgroundColor: Colors.WHITE,
+                borderColor: "Black",
+                borderWidth: 1,
+                paddingHorizontal: 16,
+                borderRadius: 8,
+                marginTop: 10,
+                height: 60,
+                justifyContent: "center",
+                alignItems: "center",
+                width: "80%",
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 16,
+                  color: Colors.BLACK,
+                  fontWeight: "bold",
+                }}
+              >
+                Choose Destination
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={{
+                backgroundColor: Colors.WHITE,
+                borderColor: "Black",
+                borderWidth: 1,
+                paddingHorizontal: 16,
+                borderRadius: 8,
+                marginTop: 10,
+                height: 60,
+                justifyContent: "center",
+                alignItems: "center",
+                width: "80%",
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 16,
+                  color: Colors.BLACK,
+                  fontWeight: "bold",
+                }}
+              >
+                Tell me about the new countries
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* ChALlenges And INSights */}
+          <View>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}> Challenges and Insights</Text>
+              <TouchableOpacity>
+                <Text style={styles.seeAll}>See All</Text>
+              </TouchableOpacity>
+            </View>
+            <Image
+              style={styles.card}
+              source={require("../../assets/images/yatch2.png")}
+            ></Image>
+            <Image
+              style={styles.card}
+              source={require("../../assets/images/yatch.png")}
+            ></Image>
+          </View>
+
+          {/* Black CHeck */}
+
+          <View style={styles.badgeContainer}>
+            <Check />
+            <Text style={styles.badgeText}>
+              Checked by our viewers for your satisfaction
+            </Text>
+          </View>
+
+          {/* CHEcked Boats */}
+
+          <View>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>Checked Boats</Text>
+              <TouchableOpacity>
+                <Text style={styles.seeAll}>See All</Text>
+              </TouchableOpacity>
+            </View>
+
+            {checkedBoats.map((boat) => (
+              <View key={boat.id} style={styles.boatCard}>
+                <Image source={boat.image} style={styles.boatImage} />
+                <View style={styles.boatDetails}>
+                  <Text style={styles.boatTitle}>{boat.name}</Text>
+                  <Text style={styles.boatRating}>
+                    ⭐ {boat.rating} · {boat.location}
+                  </Text>
+                  <Text style={styles.boatCabins}>{boat.cabins}</Text>
+                  <Text style={styles.boatPrice}>{boat.price}</Text>
+                </View>
+              </View>
+            ))}
+          </View>
+
+          {/* SUpport Content */}
+          <View style={styles.container}>
+            <Text style={styles.heading}>Support</Text>
+            <Text style={styles.subText}>For Renters</Text>
+
+            <TouchableOpacity style={styles.item}>
+              <Text style={styles.itemText}>Payments</Text>
+              <Text style={styles.subText}>How to pay rent</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.item}>
+              <Text style={styles.itemText}>Cancellation Options</Text>
+              <Text style={styles.subText}>Learn what’s covered</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.item}>
+              <Text style={styles.itemText}>Help Centre</Text>
+              <Text style={styles.subText}>Get in touch</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }
@@ -422,6 +445,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   searchInput: {
+
     marginLeft: 10,
     fontSize: 16,
     justifyContent: "center",
@@ -439,7 +463,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   seeAll: {
-    color: "blue",
+    color: Colors.PRIMARY,
     fontWeight: "bold",
   },
   card: {
@@ -470,7 +494,7 @@ const styles = StyleSheet.create({
   },
   exploreButton: {
     flexDirection: "row",
-    backgroundColor: "blue",
+    backgroundColor: Colors.PRIMARY,
     padding: 10,
     margin: 10,
     borderRadius: 5,
@@ -574,4 +598,17 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginLeft: 8,
   },
+    headerTab: {
+      alignItems: "center",
+    },
+    headerText: {
+      fontSize: 18,
+      color: Colors.WHITE,
+    },
+    activeLine: {
+      height: 3,
+      backgroundColor: Colors.WHITE,
+      width: "130%",
+      marginTop: 8,
+    },
 });
